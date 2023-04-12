@@ -8,7 +8,7 @@ namespace Sea_battle
 {
     public class Cell
     {
-        public char Value;
+        public Ship? Value;
         public ConsoleColor Color = ConsoleColor.DarkBlue;
     }
 }

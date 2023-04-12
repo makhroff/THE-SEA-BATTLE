@@ -15,19 +15,18 @@ namespace Sea_battle
         {
             sizeX = size;
             sizeY = size;
+            _cells = new Cell[sizeX, sizeY];
             InitField();
         }
 
         private void InitField()
         {
-            _cells = new Cell[sizeX, sizeY];
-
             for (int y = 0; y < sizeY; y++)
             {
                 for (int x = 0; x < sizeX; x++)
                 {
                     var cell = _cells[x, y] = new Cell();
-                    cell.Value = ' ';
+                    cell.Value = null;
                 }
             }
         }
