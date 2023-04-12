@@ -31,7 +31,22 @@ namespace Sea_battle
             }
         }
 
-        public void Draw()
+        public void DrawBlankField()
+        {
+            for (int y = 0; y < sizeY; y++)
+            {
+                for (int x = 0; x < sizeX; x++)
+                {
+                    Console.SetCursorPosition(x + 3, y + 1);
+                    Console.BackgroundColor = _cells[x, y].Color;
+                    Console.Write(' ');
+                }
+
+                Console.BackgroundColor = ConsoleColor.Black;
+            }
+        }
+
+        public void DrawCoordinates()
         {
             Console.Write("   ");
 
@@ -42,19 +57,10 @@ namespace Sea_battle
 
             Console.WriteLine();
 
-            for (int y = 0; y < sizeY; y++)
+            for(int y = 0; y < sizeY; y++)
             {
                 var offset = (y + 1) >= 10 ? string.Empty : " ";
-                Console.Write(offset + (y + 1) + " ");
-
-                for (int x = 0; x < sizeX; x++)
-                {
-                    Console.BackgroundColor = _cells[x, y].Color;
-                    Console.Write(_cells[x, y].Value);
-                }
-
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine();
+                Console.WriteLine(offset + (y + 1) + " ");
             }
         }
     }

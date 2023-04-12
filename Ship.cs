@@ -2,7 +2,7 @@
 {
     public class Ship
     {
-        private int size;
+        public int size { get; private set; }
 
         public Ship(int size)
         {

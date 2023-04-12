@@ -19,9 +19,12 @@ namespace Sea_battle
         private GamePhase gamePhase = GamePhase.ShipsArrange;
         private bool gameIsRunning = true;
 
+        private Direction direction;
+
         public void StartGameLoop()
         {
-            p1Field.Draw();
+            p1Field.DrawCoordinates();
+            p1Field.DrawBlankField();
 
             while (gameIsRunning)
             {
@@ -36,9 +39,33 @@ namespace Sea_battle
             }
         }
 
+        private void ProcessInput()
+        {
+            var input = Console.ReadKey().Key;
+
+            switch (input)
+            {
+                case ConsoleKey.UpArrow:
+                    direction = Direction.Up;
+                    break;
+
+                case ConsoleKey.DownArrow:
+                    direction = Direction.Down;
+                    break;
+
+                case ConsoleKey.LeftArrow:
+                    direction = Direction.Left;
+                    break;
+
+                 case ConsoleKey.RightArrow:
+                    direction = Direction.Right;
+                    break;
+            }
+        }
+
         private void ArrangeShips()
         {
-
+            
         }
     }
 }
