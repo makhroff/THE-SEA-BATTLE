@@ -2,9 +2,10 @@
 {
     internal class Program
     {
+        static Game game = new Game();
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            game.StartGameLoop();
         }
     }
 }

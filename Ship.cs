@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sea_battle
+﻿namespace Sea_battle
 {
-    internal class Ship
+    public class Ship
     {
+        private int size;
+
+        public Ship(int size)
+        {
+            this.size = size;
+        }
     }
 }

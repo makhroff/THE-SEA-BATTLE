@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Sea_battle
 {
-    internal class Cell
+    public class Cell
     {
+        public char Value;
+        public ConsoleColor Color = ConsoleColor.DarkBlue;
     }
 }
