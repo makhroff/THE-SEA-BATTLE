@@ -9,6 +9,10 @@ namespace Sea_battle
     public class Field
     {
         private Cell[,] _cells;
+
+        public static int startXPos = 3;
+        public static int startYPos = 1;
+
         public int sizeX { get; private set; }
         public int sizeY { get; private set; }
         public Field(int size)
@@ -37,7 +41,7 @@ namespace Sea_battle
             {
                 for (int x = 0; x < sizeX; x++)
                 {
-                    Console.SetCursorPosition(x + 3, y + 1);
+                    Console.SetCursorPosition(x + startXPos, y + startYPos);
                     Console.BackgroundColor = _cells[x, y].Color;
                     Console.Write(' ');
                 }
