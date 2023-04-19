@@ -16,11 +16,8 @@ namespace Sea_battle
     internal class Game
     {
         public static ConsoleColor defaultBackgroundColor = ConsoleColor.DarkBlue;
-        
-        private ConsoleCursor cursor = new();
-        
 
-        private Field p1Field = new(10);
+        private Player player1 = new();
 
         private GamePhase gamePhase = GamePhase.ShipsArrange;
         private bool gameIsRunning = true;
@@ -29,9 +26,10 @@ namespace Sea_battle
 
         public void StartGameLoop()
         {
-            p1Field.DrawCoordinates();
-            p1Field.DrawBlankField();
-            cursor.MoveTo(new(0, 1));
+            player1.field.DrawCoordinates();
+            player1.field.DrawBlankField();
+            player1.cursor.MoveTo(new(3, 3));
+            player1.cursor.SetSize(2);
 
             while (gameIsRunning)
             {
@@ -72,24 +70,24 @@ namespace Sea_battle
             }
 
             if (hadCursorMoved)
-                cursor.MoveTo(newCoords);
+                player1.cursor.MoveTo(newCoords);
         }
 
         private Vector2 CalculateNewCursorCoords(Vector2 newPos)
         {
-            var newCoords = cursor.currentPosition + newPos;
+            var newCoords = player1.cursor.currentPosition + newPos;
 
-            if (!AreCoordsWithinField(newCoords))
-                return cursor.currentPosition;
+            if (!AreCoordsWithinField(newCoords, player1.field))
+                return player1.cursor.currentPosition;
 
             hadCursorMoved = true;
             return newCoords;
         }
 
-        private bool AreCoordsWithinField(Vector2 coords)
+        public static bool AreCoordsWithinField(Vector2 coords, Field field)
         {
             Vector2 minCoords = new Vector2(-1, -1);
-            Vector2 maxCoords = new Vector2(p1Field.sizeX, p1Field.sizeY);
+            Vector2 maxCoords = new Vector2(field.sizeX, field.sizeY);
 
             return coords > minCoords && coords < maxCoords;
         }

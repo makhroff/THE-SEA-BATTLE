@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Sea_battle
 {
-    internal class Player
+    public class Player
     {
+        public Field field = new(10);
+        public ConsoleCursor cursor = new();
     }
 }
