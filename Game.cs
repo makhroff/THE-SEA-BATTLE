@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sea_battle
 {
@@ -28,12 +23,13 @@ namespace Sea_battle
         {
             player1.field.DrawCoordinates();
             player1.field.DrawBlankField();
-            player1.cursor.MoveTo(new(3, 3));
-            player1.cursor.SetSize(2);
+
+            player1.cursor.currentPositions = new Vector2[] { new Vector2(3, 3) };
+            player1.cursor.SetSize(ShipType.Battleship.GetSize());
 
             while (gameIsRunning)
             {
-                switch(gamePhase)
+                switch (gamePhase)
                 {
                     case GamePhase.ShipsArrange:
                         ProcessInput();
@@ -47,25 +43,25 @@ namespace Sea_battle
         private void ProcessInput()
         {
             var input = Console.ReadKey().Key;
-            Vector2 newCoords = new(0, 0);
+            Vector2[] newCoords = new Vector2[player1.cursor.currentPositions.Length];
             hadCursorMoved = false;
 
             switch (input)
             {
                 case ConsoleKey.UpArrow:
-                    newCoords = CalculateNewCursorCoords(new(0, -1));
+                    newCoords = CalculateNewCursorCoords(new Vector2(0, -1));
                     break;
 
                 case ConsoleKey.DownArrow:
-                    newCoords = CalculateNewCursorCoords(new(0, 1));
+                    newCoords = CalculateNewCursorCoords(new Vector2(0, 1));
                     break;
 
                 case ConsoleKey.LeftArrow:
-                    newCoords = CalculateNewCursorCoords(new(-1, 0));
+                    newCoords = CalculateNewCursorCoords(new Vector2(-1, 0));
                     break;
 
-                 case ConsoleKey.RightArrow:
-                    newCoords = CalculateNewCursorCoords(new(1, 0));
+                case ConsoleKey.RightArrow:
+                    newCoords = CalculateNewCursorCoords(new Vector2(1, 0));
                     break;
             }
 
@@ -73,12 +69,18 @@ namespace Sea_battle
                 player1.cursor.MoveTo(newCoords);
         }
 
-        private Vector2 CalculateNewCursorCoords(Vector2 newPos)
+        private Vector2[] CalculateNewCursorCoords(Vector2 newPos)
         {
-            var newCoords = player1.cursor.currentPosition + newPos;
+            Vector2[] newCoords = new Vector2[player1.cursor.currentPositions.Length];
+            for (int i = 0; i < player1.cursor.currentPositions.Length; i++)
+            {
+                newCoords[i] = player1.cursor.currentPositions[i] + newPos;
 
-            if (!AreCoordsWithinField(newCoords, player1.field))
-                return player1.cursor.currentPosition;
+                if (newCoords[i].x < 0 || newCoords[i].x >= player1.field.sizeX || newCoords[i].y < 0 || newCoords[i].y >= player1.field.sizeY)
+                {
+                    return player1.cursor.currentPositions;
+                }
+            }
 
             hadCursorMoved = true;
             return newCoords;
