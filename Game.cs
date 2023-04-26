@@ -1,97 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Sea_battle
 {
-    public enum GamePhase
+    public class Game
     {
-        ShipsArrange,
-        BattleProcess
-    }
+        private UserType firstUserType;
+        private UserType secondUserType;
 
-    internal class Game
-    {
-        public static ConsoleColor defaultBackgroundColor = ConsoleColor.DarkBlue;
-        
-        private ConsoleCursor cursor = new();
-        
+        private int user1Wins = 0;
+        private int user2Wins = 0;
 
-        private Field p1Field = new(10);
+        private static int RoundsNeededToWin = 3;
 
-        private GamePhase gamePhase = GamePhase.ShipsArrange;
-        private bool gameIsRunning = true;
-
-        private bool hadCursorMoved = false;
-
-        public void StartGameLoop()
+        public Game()
         {
-            p1Field.DrawCoordinates();
-            p1Field.DrawBlankField();
-            cursor.MoveTo(new(0, 1));
+            firstUserType = GetUserType("fisrt");
+            secondUserType = GetUserType("second");
+        }
 
-            while (gameIsRunning)
+        public void StartMatch()
+        {
+            bool isThereAWinner = false;
+
+            while (!isThereAWinner)
             {
-                switch(gamePhase)
-                {
-                    case GamePhase.ShipsArrange:
-                        ProcessInput();
-                        break;
-                    case GamePhase.BattleProcess:
-                        break;
-                }
+                Console.Clear();
+
+                Round round = new(firstUserType, secondUserType);
+                round.StartGameLoop(out RoundWinner roundWinner);
+
+                isThereAWinner = ProcessRoundWinner(roundWinner);
             }
         }
 
-        private void ProcessInput()
+        private bool ProcessRoundWinner(RoundWinner roundWinner)
         {
-            var input = Console.ReadKey().Key;
-            Vector2 newCoords = new(0, 0);
-            hadCursorMoved = false;
+            if(roundWinner == RoundWinner.User1)
+                user1Wins++;
+            if(roundWinner == RoundWinner.User2)
+                user2Wins++;
 
-            switch (input)
+            return (user1Wins == RoundsNeededToWin || user2Wins == RoundsNeededToWin);
+        }
+
+        private UserType GetUserType(string index)
+        {
+            Console.Clear();
+
+            Console.WriteLine($"Write 1 if the {index} user is a player, write 2 if the {index} user is a BOT!");
+            string? output = Console.ReadLine();
+
+            UserType userType = output switch
             {
-                case ConsoleKey.UpArrow:
-                    newCoords = CalculateNewCursorCoords(new(0, -1));
-                    break;
+                "1" => UserType.HumanPlayer,
+                "2" => UserType.Bot,
+                _ => GetUserType(index)
+            };
 
-                case ConsoleKey.DownArrow:
-                    newCoords = CalculateNewCursorCoords(new(0, 1));
-                    break;
-
-                case ConsoleKey.LeftArrow:
-                    newCoords = CalculateNewCursorCoords(new(-1, 0));
-                    break;
-
-                 case ConsoleKey.RightArrow:
-                    newCoords = CalculateNewCursorCoords(new(1, 0));
-                    break;
-            }
-
-            if (hadCursorMoved)
-                cursor.MoveTo(newCoords);
-        }
-
-        private Vector2 CalculateNewCursorCoords(Vector2 newPos)
-        {
-            var newCoords = cursor.currentPosition + newPos;
-
-            if (!AreCoordsWithinField(newCoords))
-                return cursor.currentPosition;
-
-            hadCursorMoved = true;
-            return newCoords;
-        }
-
-        private bool AreCoordsWithinField(Vector2 coords)
-        {
-            Vector2 minCoords = new Vector2(-1, -1);
-            Vector2 maxCoords = new Vector2(p1Field.sizeX, p1Field.sizeY);
-
-            return coords > minCoords && coords < maxCoords;
+            return userType;
         }
     }
 }

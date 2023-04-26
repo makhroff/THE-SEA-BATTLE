@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Sea_battle
 {
-    public class Player
+    public class Bot : User
     {
-        public Field field = new(10);
-        public ConsoleCursor cursor = new();
+        public override void ArrangeShips()
+        {
+            base.ArrangeShips();
+        }
     }
 }

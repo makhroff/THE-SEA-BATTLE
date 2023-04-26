@@ -10,24 +10,24 @@ namespace Sea_battle
     {
         private Cell[,] _cells;
 
+        public ConsoleColor BackgroundColor = ConsoleColor.Blue;
+
         public static int startXPos = 3;
         public static int startYPos = 1;
 
-        public int sizeX { get; private set; }
-        public int sizeY { get; private set; }
+        public int size = 10;
         public Field(int size)
         {
-            sizeX = size;
-            sizeY = size;
-            _cells = new Cell[sizeX, sizeY];
+            this.size = size;
+            _cells = new Cell[this.size, this.size];
             InitField();
         }
 
         private void InitField()
         {
-            for (int y = 0; y < sizeY; y++)
+            for (int y = 0; y < size; y++)
             {
-                for (int x = 0; x < sizeX; x++)
+                for (int x = 0; x < size; x++)
                 {
                     var cell = _cells[x, y] = new Cell();
                     cell.Value = null;
@@ -37,13 +37,11 @@ namespace Sea_battle
 
         public void DrawBlankField()
         {
-            for (int y = 0; y < sizeY; y++)
+            for (int y = 0; y < size; y++)
             {
-                for (int x = 0; x < sizeX; x++)
+                for (int x = 0; x < size; x++)
                 {
-                    Console.SetCursorPosition(x + startXPos, y + startYPos);
-                    Console.BackgroundColor = _cells[x, y].Color;
-                    Console.Write(' ');
+                    new Vector2(x, y).SetColor(BackgroundColor);
                 }
 
                 Console.BackgroundColor = ConsoleColor.Black;
@@ -54,14 +52,14 @@ namespace Sea_battle
         {
             Console.Write("   ");
 
-            for (int x = 0; x < sizeX; x++)
+            for (int x = 0; x < size; x++)
             {
                 Console.Write((char)(x + 'A'));
             }
 
             Console.WriteLine();
 
-            for(int y = 0; y < sizeY; y++)
+            for(int y = 0; y < size; y++)
             {
                 var offset = (y + 1) >= 10 ? string.Empty : " ";
                 Console.WriteLine(offset + (y + 1) + " ");

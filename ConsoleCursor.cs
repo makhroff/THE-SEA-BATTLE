@@ -15,14 +15,8 @@
 
         public void UpdatePositionInConsole()
         {
-            SetCursorPosition(oldPosition);
-            Console.BackgroundColor = Game.defaultBackgroundColor;
-            Console.Write(" ");
-            SetCursorPosition(currentPosition);
-            Console.BackgroundColor = color;
-            Console.Write(" ");
+            oldPosition.SetColor(User.defaultBackgroundColor);
+            currentPosition.SetColor(color);
         }
-
-        void SetCursorPosition(Vector2 pos) => Console.SetCursorPosition(pos.x + Field.startXPos, pos.y + Field.startYPos);
     }
 }
