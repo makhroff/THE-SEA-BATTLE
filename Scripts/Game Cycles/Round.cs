@@ -1,5 +1,6 @@
 ﻿using Sea_battle.Users;
 using Sea_battle.Other;
+using Sea_battle.Users.Player;
 
 namespace Sea_battle.GameCycles
 {
@@ -20,22 +21,34 @@ namespace Sea_battle.GameCycles
         private User user1;
         private User user2;
 
+        private PlayerProfile profile1;
+        private PlayerProfile profile2;
+
+        private bool isUser1AHuman;
+        private bool isUser2AHuman;
+
         private bool gameIsRunning = true;
 
         private int shipsToArrange = 10;
 
-        public Round(UserType userType1, UserType userType2)
+        public Round(UserType userType1, UserType userType2, PlayerProfile profile1, PlayerProfile profile2)
         {
             user1 = userType1.GetNewUser();
             user2 = userType2.GetNewUser();
+
+            isUser1AHuman = userType1 == UserType.HumanPlayer;
+            isUser2AHuman = userType2 == UserType.HumanPlayer;
+
+            this.profile1 = profile1;
+            this.profile2 = profile2;
 
             currentUser = user1;
         }
 
         public void PlayGameAndReturnWinner(out RoundWinner winner)
         {
-            user1.Setup("KIKRIL", user2.field);
-            user2.Setup("BUBLIK", user1.field);
+            SetUpUser(user1, isUser1AHuman, profile1);
+            SetUpUser(user2, isUser2AHuman, profile2);
 
             user1.ArrangeShips(shipsToArrange);
             user2.ArrangeShips(shipsToArrange);
@@ -56,6 +69,14 @@ namespace Sea_battle.GameCycles
             }
 
             winner = (currentUser.name == user1.name) ? RoundWinner.User1 : RoundWinner.User2;
+        }
+
+        private void SetUpUser(User user, bool isAHuman, PlayerProfile profile)
+        {
+            if (isAHuman)
+                user1.Setup(user.field, profile);
+            else
+                user1.Setup(user.field);
         }
 
         private bool HadSomebodyWon() 

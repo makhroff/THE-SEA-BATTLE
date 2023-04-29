@@ -1,5 +1,6 @@
 ﻿using Sea_battle.Field_;
 using Sea_battle.Other;
+using Sea_battle.Users.Player;
 
 namespace Sea_battle.Users
 {
@@ -23,9 +24,16 @@ namespace Sea_battle.Users
 
         private List<Vector2> shipCoordsList = new();
 
-        public virtual void Setup(string name, Field ennemyField)
+        public virtual void Setup(Field ennemyField)
         {
-            this.name = name;
+            this.ennemyField = ennemyField;
+            personnalFieldOffset = new(0, field.size + ennemyFieldOffset.y + 3);
+        }
+
+        //ONLY FOR PLAYERS
+        public virtual void Setup( Field ennemyField, PlayerProfile profile)
+        {
+            this.name = profile.Name;
             this.ennemyField = ennemyField;
             personnalFieldOffset = new(0, field.size + ennemyFieldOffset.y + 3);
         }

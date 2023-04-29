@@ -1,4 +1,7 @@
-﻿using Sea_battle.Users;
+﻿using Sea_battle.SaveSystem;
+using Sea_battle.Scripts.SaveSystem;
+using Sea_battle.Users;
+using Sea_battle.Users.Player;
 
 namespace Sea_battle.GameCycles
 {
@@ -12,10 +15,27 @@ namespace Sea_battle.GameCycles
 
         private static int RoundsNeededToWin = 3;
 
+        private PlayerProfile profile1;
+        private PlayerProfile profile2;
+
         public Game()
         {
             firstUserType = GetUserType("fisrt");
             secondUserType = GetUserType("second");
+            
+
+            if (firstUserType == UserType.HumanPlayer)
+                profile1 = LoadOrCreatePlayerProfile();
+            if (secondUserType == UserType.HumanPlayer)
+                profile2 = LoadOrCreatePlayerProfile();
+        }
+
+        public PlayerProfile LoadOrCreatePlayerProfile()
+        {
+            Console.WriteLine("Write the name of your profile:");
+            var name = Console.ReadLine();
+
+            return ProfileSaveSystem.Load(name);
         }
 
         public void StartMatch()
@@ -26,7 +46,7 @@ namespace Sea_battle.GameCycles
             {
                 Console.Clear();
 
-                Round round = new(firstUserType, secondUserType);
+                Round round = new(firstUserType, secondUserType, profile1, profile2);
                 round.PlayGameAndReturnWinner(out RoundWinner roundWinner);
 
                 Console.WriteLine(roundWinner.ToString() + " had won the round!");
