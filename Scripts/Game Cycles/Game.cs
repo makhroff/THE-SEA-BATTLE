@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Sea_battle.Users;
 
-namespace Sea_battle
+namespace Sea_battle.GameCycles
 {
     public class Game
     {
@@ -32,7 +27,9 @@ namespace Sea_battle
                 Console.Clear();
 
                 Round round = new(firstUserType, secondUserType);
-                round.StartGameLoop(out RoundWinner roundWinner);
+                round.PlayGameAndReturnWinner(out RoundWinner roundWinner);
+
+                Console.WriteLine(roundWinner.ToString() + " had won the round!");
 
                 isThereAWinner = ProcessRoundWinner(roundWinner);
             }

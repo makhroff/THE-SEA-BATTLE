@@ -1,4 +1,6 @@
-﻿namespace Sea_battle
+﻿using Sea_battle.GameCycles;
+
+namespace Sea_battle
 {
     public class Program
     {
